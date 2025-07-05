@@ -1,0 +1,43 @@
+___________________________________________________________________________________________________________________
+____________________________________________ formdata  ____________________________________________________________
+___________________________________________________________________________________________________________________
+
+
+-> formdata is basically JS object that helps to build
+
+-> without axios i need to give this content-type header - multipart/form-data
+
+-> if i directly sent files without formdata then the browser wil not automatically convert a file into a formate the server understands multipart/form-data requests used for submitting files, images, or form fields to a server.
+
+
+___________________________________________________________________________________________________________________
+____________________________________________ Multer  ______________________________________________________________
+___________________________________________________________________________________________________________________
+
+-> Multer is a middleware for Express.js that makes handling file uploads easy.
+
+->Multer can store uploaded files in RAM (memory) or ROM (disk) depending on how you configure it.
+
+-> What Multer does:
+Parses incoming multipart/form-data requests.
+
+Saves uploaded files to disk or memory.
+
+Provides metadata about uploaded files.
+
+Makes the files accessible via req.file (single file) or req.files (multiple files).
+
+___________________________________________________________________________________________________________________
+____________________________________________ Buffer  ______________________________________________________________
+___________________________________________________________________________________________________________________
+-> pdf are just file name but in the file raw data are buffer
+-> PDF parsers need a Buffer of the PDF file to extract text
+
+
+-> When Multer stores a file in memory, it keeps it as a Buffer (req.file.buffer).
+When reading from disk, you use fs.readFileSync(path) which returns a Buffer.
+pdf-parse accepts a Buffer to extract text from the PDF binary data.
+
+-> read the file from disk or from memory
+
+
