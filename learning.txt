@@ -41,3 +41,16 @@ pdf-parse accepts a Buffer to extract text from the PDF binary data.
 -> read the file from disk or from memory
 
 
+___________________________________________________________________________________________________________________
+____________________________________________ Request Body  ________________________________________________________
+___________________________________________________________________________________________________________________
+
+An HTTP POST request has only one body.
+The body can be in one format at a time (like JSON or multipart/form-data).
+You cannot send raw JSON and a file separately in the same request body.
+To send text and files together, use multipart/form-data where text fields and files are parts of one combined body.
+Alternatively, send text and file in two separate requests.
+
+-> A request with a single Content-Type like application/json (for JSON text content)
+OR
+-> A request with multipart/form-data (for files plus any text fields)
