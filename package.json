@@ -11,6 +11,7 @@
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
+    "@react-three/fiber": "^9.0.0-alpha.8",
     "@reduxjs/toolkit": "^2.8.2",
     "@tabler/icons-react": "^3.34.0",
     "axios": "^1.10.0",
@@ -27,6 +28,7 @@
     "react-hot-toast": "^2.5.2",
     "react-redux": "^9.2.0",
     "tailwind-merge": "^3.3.1",
+    "three": "^0.178.0",
     "zod": "^3.25.75"
   },
   "devDependencies": {
@@ -35,6 +37,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.178.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
     "tailwindcss": "^4",

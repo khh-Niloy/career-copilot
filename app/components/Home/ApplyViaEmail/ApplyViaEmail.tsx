@@ -21,13 +21,16 @@ import CreateResumeCTA from "./components/CreateResumeCTA";
 import GeneratedEmailBody from "./components/GeneratedEmailBody";
 import MagicIcon from "../../../../components/icons/MagicIcon";
 import { useGenerateEmailBodyMutation } from "@/redux/api/baseApi";
+import Spinner from "@/components/icons/Spinner";
 
 export default function ApplyViaEmail() {
   const [files, setFiles] = useState<File[]>([]);
   const [emailBody, setEmailBody] = useState<any>(null);
   const { register, handleSubmit } = useForm();
 
-  const [generateEmailBody] = useGenerateEmailBodyMutation();
+  const [generateEmailBody, { isLoading }] = useGenerateEmailBodyMutation();
+
+  // TODO after regenerate file not showing
 
   const formZodSchema = z.object({
     files: z.array(z.instanceof(File)).min(1, "Please upload your resume"),
@@ -68,6 +71,7 @@ export default function ApplyViaEmail() {
       // console.log(res);
 
       const res = await generateEmailBody(formdata);
+
       // console.log(res);
 
       if (res?.data?.status == 200) {
@@ -91,35 +95,41 @@ export default function ApplyViaEmail() {
               emailBody={emailBody}
             />
           ) : (
-            <form onSubmit={handleSubmit(submitResumeAndJobDes)}>
-              {/* <DialogHeader>
+            <>
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <form onSubmit={handleSubmit(submitResumeAndJobDes)}>
+                  {/* <DialogHeader>
               <DialogTitle>Edit profile</DialogTitle>
               <DialogDescription>
                 Make changes to your profile here. Click save when you&apos;re
                 done.
               </DialogDescription>
             </DialogHeader> */}
-              <div className="flex gap-5">
-                <div className="w-[50%] mx-auto border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
-                  <FileUpload onChange={handleFileUpload} />
+                  <div className="flex gap-5">
+                    <div className="w-[50%] mx-auto border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
+                      <FileUpload onChange={handleFileUpload} />
 
-                  <textarea
-                    {...register("jobDescription")}
-                    rows={3}
-                    placeholder="Paste the job description here..."
-                    className="relative border-t border-dashed placeholder:text-black/70 custom-scrollbar focus:outline-0 place-content-end resize-none
+                      <textarea
+                        {...register("jobDescription")}
+                        rows={3}
+                        placeholder="Paste the job description here..."
+                        className="relative border-t border-dashed placeholder:text-black/70 custom-scrollbar focus:outline-0 place-content-end resize-none
                      text-black bg-white p-3 sm:p-4 rounded-b-lg border-black/50 w-full"
-                  />
-                </div>
+                      />
+                    </div>
 
-                <CreateResumeCTA />
-              </div>
-              <DialogFooter>
-                <Button className="w-full mt-3" type="submit">
-                  <MagicIcon /> Let AI Craft the Perfect Email for You!
-                </Button>
-              </DialogFooter>
-            </form>
+                    <CreateResumeCTA />
+                  </div>
+                  <DialogFooter>
+                    <Button className="w-full mt-3" type="submit">
+                      <MagicIcon /> Let AI Craft the Perfect Email for You!
+                    </Button>
+                  </DialogFooter>
+                </form>
+              )}
+            </>
           )}
         </DialogContent>
       </Dialog>
