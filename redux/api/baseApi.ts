@@ -12,7 +12,14 @@ export const baseApi = createApi({
         body: formData,
       }),
     }),
+    jobApply: builder.mutation({
+      query: (playLoad) => ({
+        url: "premium/apply",
+        method: "POST",
+        body: playLoad,
+      }),
+    }),
   }),
 });
 
-export const { useGenerateEmailBodyMutation } = baseApi;
+export const { useGenerateEmailBodyMutation, useJobApplyMutation } = baseApi;

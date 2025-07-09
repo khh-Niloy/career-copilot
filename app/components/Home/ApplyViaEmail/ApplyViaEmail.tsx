@@ -22,13 +22,17 @@ import GeneratedEmailBody from "./components/GeneratedEmailBody";
 import MagicIcon from "../../../../components/icons/MagicIcon";
 import { useGenerateEmailBodyMutation } from "@/redux/api/baseApi";
 import Spinner from "@/components/icons/Spinner";
+import { useAppDispatch } from "@/redux/hooks/hooks";
+import { storeResumeFile } from "@/redux/features/resumeSlice";
 
 export default function ApplyViaEmail() {
   const [files, setFiles] = useState<File[]>([]);
   const [emailBody, setEmailBody] = useState<any>(null);
+  const [pdfBuffer, setpdfBuffer] = useState<any>(null);
   const { register, handleSubmit } = useForm();
 
   const [generateEmailBody, { isLoading }] = useGenerateEmailBodyMutation();
+  const dispatch = useAppDispatch();
 
   // TODO after regenerate file not showing
 
@@ -64,18 +68,12 @@ export default function ApplyViaEmail() {
     formdata.append("jobDescription", data.jobDescription);
 
     try {
-      // const res = await axios.post(
-      //   `${process.env.NEXT_PUBLIC_BACKEND_URL}resume/jobdes`,
-      //   formdata
-      // );
-      // console.log(res);
-
+      dispatch(storeResumeFile(files[0]));
       const res = await generateEmailBody(formdata);
-
-      // console.log(res);
-
+      console.log(res);
       if (res?.data?.status == 200) {
         setEmailBody(res?.data?.aiGeneratedText);
+        setpdfBuffer(res?.data?.pdfBuffer);
       }
     } catch (error) {
       console.log(error);
@@ -93,6 +91,7 @@ export default function ApplyViaEmail() {
             <GeneratedEmailBody
               setEmailBody={setEmailBody}
               emailBody={emailBody}
+              pdfBuffer={pdfBuffer}
             />
           ) : (
             <>

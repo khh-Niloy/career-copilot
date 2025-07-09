@@ -1,11 +1,25 @@
 import { Button } from "@/components/ui/button";
+import { useJobApplyMutation } from "@/redux/api/baseApi";
+import { useAppSelector } from "@/redux/hooks/hooks";
 import { Copy, RotateCcw, Send } from "lucide-react";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 
-export default function GeneratedEmailBody({ setEmailBody, emailBody }) {
+/* 
+  TODO -> POST (pdf buffer + emailbody) -> nodemailer
+*/
+
+export default function GeneratedEmailBody({
+  setEmailBody,
+  emailBody,
+  pdfBuffer,
+}) {
   const emailRef = useRef(null);
   const [isCopied, setisCopied] = useState(false);
+
+  const [jobApply, { isLoading }] = useJobApplyMutation();
+
+  const file = useAppSelector((state) => state.resume.resumeFile);
 
   async function handleCopyEmailBody() {
     setisCopied(true);
@@ -15,6 +29,22 @@ export default function GeneratedEmailBody({ setEmailBody, emailBody }) {
         setisCopied(false);
       }, 2000);
     });
+  }
+
+  async function handleApplyJob() {
+    // const decodedBuffer = Buffer.from(pdfBuffer, "base64").toString("base64");
+    const formattedEmailBody = {
+      ...emailBody,
+      currentUserEmail: "hasib2305341709@diu.edu.bd",
+    };
+
+    const formdata = new FormData();
+    formdata.append("pdf", file);
+    formdata.append("emailBody", JSON.stringify(formattedEmailBody));
+
+    const res = await jobApply(formdata);
+
+    console.log(res);
   }
 
   return (
@@ -35,7 +65,8 @@ export default function GeneratedEmailBody({ setEmailBody, emailBody }) {
             suppressContentEditableWarning={true}
             className="outline-0 p-4"
           >
-            <p>Subject: {emailBody?.subjectLine}</p>
+            <p>Email: {emailBody?.email}</p>
+            <p className="mt-5">Subject: {emailBody?.subjectLine}</p>
             <p className="mt-5">{emailBody?.greeting}</p>
             <p className="mt-5">{emailBody?.introduction}</p>
             <p className="mt-5">{emailBody?.technicalSkills}</p>
@@ -97,14 +128,17 @@ export default function GeneratedEmailBody({ setEmailBody, emailBody }) {
 
       <div className="flex flex-col w-1/2 border border-dashed border-neutral-300 rounded-lg">
         <div className="p-2 relative h-1/2 border-b border-dashed border-neutral-300 flex flex-col items-center justify-center gap-2 text-center">
-          <h1 className="absolute top-3 text-xl font-semibold">Coming Soon!</h1>
-          <div className="opacity-25 flex flex-col items-center justify-center gap-2 text-center">
-            <h1 className="text-xl font-semibold mt-6">Premium User</h1>
+          <div className="flex flex-col items-center justify-center gap-2 text-center">
+            <h1 className="text-xl font-semibold">Premium User</h1>
             <p className="text-sm">
               We have crafted your email. No need to copy, paste, or send it
               manually — just click once and skip the hassle!
             </p>
-            <Button disabled className="text-xs cursor-pointer">
+            <Button
+              onClick={handleApplyJob}
+              // disabled
+              className="text-xs cursor-pointer"
+            >
               <Send /> Send My Application
             </Button>
           </div>

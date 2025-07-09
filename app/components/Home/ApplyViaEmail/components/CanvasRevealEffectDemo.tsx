@@ -3,6 +3,7 @@ import React from "react";
 
 import { AnimatePresence, motion } from "motion/react";
 import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
+import { Button } from "@/components/ui/button";
 
 export function CanvasRevealEffectDemo() {
   return (
@@ -55,10 +56,10 @@ const Card = ({ children }: { children?: React.ReactNode }) => {
         )}
       </AnimatePresence>
 
-      <div className="relative z-20 rounded-lg text-center">
+      <div className="relative  rounded-lg text-center">
         {/* <h2 className="dark:text-white text-xl opacity-0 group-hover/canvas-card:opacity-100 relative z-10 text-black mt-4  font-bold group-hover/canvas-card:text-white group-hover/canvas-card:-translate-y-2 transition duration-200"> */}
         <h1 className="text-2xl font-semibold">Dont have resume?</h1>
-        <h2>Create now!</h2>
+        <Button className="mt-2">Create now!</Button>
         {/* </h2> */}
       </div>
     </div>

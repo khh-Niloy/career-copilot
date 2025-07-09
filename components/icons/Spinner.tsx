@@ -21,7 +21,7 @@ export default function Spinner() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % loadingMessagesArr.length);
-    }, 4000);
+    }, 4700);
 
     return () => clearInterval(interval);
   }, []);
