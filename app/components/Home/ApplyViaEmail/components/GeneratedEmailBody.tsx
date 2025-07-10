@@ -1,25 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { useJobApplyMutation } from "@/redux/api/baseApi";
 import { useAppSelector } from "@/redux/hooks/hooks";
+import axios from "axios";
 import { Copy, RotateCcw, Send } from "lucide-react";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 
-/* 
-  TODO -> POST (pdf buffer + emailbody) -> nodemailer
-*/
-
 export default function GeneratedEmailBody({
   setEmailBody,
   emailBody,
-  pdfBuffer,
+  // pdfBuffer,
 }) {
   const emailRef = useRef(null);
   const [isCopied, setisCopied] = useState(false);
 
   const [jobApply, { isLoading }] = useJobApplyMutation();
-
-  const file = useAppSelector((state) => state.resume.resumeFile);
 
   async function handleCopyEmailBody() {
     setisCopied(true);
@@ -31,20 +26,49 @@ export default function GeneratedEmailBody({
     });
   }
 
+  // const file = useAppSelector((state) => state.resume.resumeFile);
+
   async function handleApplyJob() {
-    // const decodedBuffer = Buffer.from(pdfBuffer, "base64").toString("base64");
+    console.log("clicked apply job");
+
     const formattedEmailBody = {
       ...emailBody,
-      currentUserEmail: "hasib2305341709@diu.edu.bd",
+      currentUserEmail: "niloy.dev.101@gmail.com",
     };
 
-    const formdata = new FormData();
-    formdata.append("pdf", file);
-    formdata.append("emailBody", JSON.stringify(formattedEmailBody));
+    // const formdata = new FormData();
+    // formdata.append("pdf", file);
+    // formdata.append("emailBody", JSON.stringify(formattedEmailBody));
 
-    const res = await jobApply(formdata);
+    const userEmail = {
+      email: "niloy.dev.101@gmail.com",
+    };
+    const res = await axios.post(
+      "http://localhost:8000/api/premium/check/rftoken",
+      userEmail
+    );
 
-    console.log(res);
+    console.log("res after /api/premium/check/rftoken", res);
+
+    if (!res.data.isRefTokenExist) {
+      const sessionEmailBody = {
+        emailBody: formattedEmailBody,
+      };
+      sessionStorage.setItem(
+        "premiumUserPlayLoad",
+        JSON.stringify(sessionEmailBody)
+      );
+      window.location.href = "http://localhost:8000/api/premium/auth/login";
+    }
+
+    // const decodedBuffer = Buffer.from(pdfBuffer, "base64").toString("base64");
+
+    // await axios.get("http://localhost:8000/api/premium/auth/login");
+    // Redirect user to your server login route
+
+    // const res = await jobApply(formdata);
+
+    // console.log(res);
   }
 
   return (

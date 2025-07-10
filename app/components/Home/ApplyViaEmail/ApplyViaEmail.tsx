@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
-import axios from "axios";
+// import axios from "axios";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,18 +23,16 @@ import MagicIcon from "../../../../components/icons/MagicIcon";
 import { useGenerateEmailBodyMutation } from "@/redux/api/baseApi";
 import Spinner from "@/components/icons/Spinner";
 import { useAppDispatch } from "@/redux/hooks/hooks";
-import { storeResumeFile } from "@/redux/features/resumeSlice";
+// import { storeResumeFile } from "@/redux/features/resumeSlice";
 
 export default function ApplyViaEmail() {
   const [files, setFiles] = useState<File[]>([]);
   const [emailBody, setEmailBody] = useState<any>(null);
-  const [pdfBuffer, setpdfBuffer] = useState<any>(null);
+  // const [pdfBuffer, setpdfBuffer] = useState<any>(null);
   const { register, handleSubmit } = useForm();
 
   const [generateEmailBody, { isLoading }] = useGenerateEmailBodyMutation();
   const dispatch = useAppDispatch();
-
-  // TODO after regenerate file not showing
 
   const formZodSchema = z.object({
     files: z.array(z.instanceof(File)).min(1, "Please upload your resume"),
@@ -66,14 +64,15 @@ export default function ApplyViaEmail() {
     const formdata = new FormData();
     formdata.append("pdf", files[0]);
     formdata.append("jobDescription", data.jobDescription);
+    // ! have to send user email
 
     try {
-      dispatch(storeResumeFile(files[0]));
+      // dispatch(storeResumeFile(files[0]));
       const res = await generateEmailBody(formdata);
       console.log(res);
       if (res?.data?.status == 200) {
         setEmailBody(res?.data?.aiGeneratedText);
-        setpdfBuffer(res?.data?.pdfBuffer);
+        // setpdfBuffer(res?.data?.pdfBuffer);
       }
     } catch (error) {
       console.log(error);
@@ -91,7 +90,7 @@ export default function ApplyViaEmail() {
             <GeneratedEmailBody
               setEmailBody={setEmailBody}
               emailBody={emailBody}
-              pdfBuffer={pdfBuffer}
+              // pdfBuffer={pdfBuffer}
             />
           ) : (
             <>
