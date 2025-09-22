@@ -41,14 +41,14 @@ export default function GeneratedEmailBody({
     // formdata.append("emailBody", JSON.stringify(formattedEmailBody));
 
     const userEmail = {
-      email: "niloy.dev.101@gmail.com",
+      email: "khhniloy0@gmail.com",
     };
     const res = await axios.post(
-      "http://localhost:8000/api/premium/check/rftoken",
+      "http://localhost:8000/api/v1/user/premium/check/rftoken",
       userEmail
     );
 
-    console.log("res after /api/premium/check/rftoken", res);
+    console.log("res after api/v1/user/premium/check/rftoken", res);
 
     if (!res.data.isRefTokenExist) {
       const sessionEmailBody = {
@@ -58,7 +58,7 @@ export default function GeneratedEmailBody({
         "premiumUserPlayLoad",
         JSON.stringify(sessionEmailBody)
       );
-      window.location.href = "http://localhost:8000/api/premium/auth/login";
+      window.location.href = "http://localhost:8000/api/v1/user/premium/google/auth";
     }
 
     // const decodedBuffer = Buffer.from(pdfBuffer, "base64").toString("base64");

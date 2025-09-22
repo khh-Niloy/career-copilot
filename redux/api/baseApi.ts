@@ -7,14 +7,14 @@ export const baseApi = createApi({
   endpoints: (builder) => ({
     generateEmailBody: builder.mutation({
       query: (formData) => ({
-        url: "resume/jobdes",
+        url: "user/email-body",
         method: "POST",
         body: formData,
       }),
     }),
     jobApply: builder.mutation({
       query: (playLoad) => ({
-        url: "premium/apply",
+        url: "user/premium/apply",
         method: "POST",
         body: playLoad,
       }),

@@ -70,7 +70,7 @@ export default function ApplyViaEmail() {
       // dispatch(storeResumeFile(files[0]));
       const res = await generateEmailBody(formdata);
       console.log(res);
-      if (res?.data?.status == 200) {
+      if (res?.data?.success) {
         setEmailBody(res?.data?.aiGeneratedText);
         // setpdfBuffer(res?.data?.pdfBuffer);
       }

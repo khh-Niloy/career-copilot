@@ -34,7 +34,7 @@ export default function Confirmation() {
     const sessionEmailBody = sessionStorage.getItem("premiumUserPlayLoad");
     const parsedEmailBody = JSON.parse(sessionEmailBody);
 
-    console.log(parsedEmailBody.emailBody);
+    // console.log(parsedEmailBody.emailBody);
 
     // console.log("parsedEmailBody", parsedEmailBody);
 
@@ -47,10 +47,11 @@ export default function Confirmation() {
     // formdata.append("emailBody", JSON.stringify(parsedEmailBody));
 
     const userPlayLoad = {
-      emailBody: parsedEmailBody.emailBody,
-      userEmail: "niloy.dev.101@gmail.com",
+      emailbody: parsedEmailBody,
+      userEmail: "khhniloy0@gmail.com",
     };
     const res = await jobApply(userPlayLoad);
+    console.log(res)
   }
 
   return (
